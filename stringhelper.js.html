@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: stringhelper.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: stringhelper.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* global YoastSEO: true */
+YoastSEO = ( "undefined" === typeof YoastSEO ) ? {} : YoastSEO;
+
+/**helper functions*/
+YoastSEO.StringHelper = function() {};
+
+/**
+ * removes strings from array and replaces them with keyword.
+ * @param textString
+ * @param stringsToRemove []
+ * @param replacement (default == space)
+ * @returns {textString}
+ */
+YoastSEO.StringHelper.prototype.replaceString = function(
+	textString,
+	stringsToRemove,
+	replacement
+) {
+	if ( typeof replacement === "undefined" ) {
+		replacement = " ";
+	}
+	textString = textString.replace( this.stringToRegex( stringsToRemove ), replacement );
+	return this.stripSpaces( textString );
+};
+
+/**
+ * matches string with given array of strings to match.
+ * @param textString
+ * @param stringsToMatch
+ * @returns {matches}
+ */
+YoastSEO.StringHelper.prototype.matchString = function( textString, stringsToMatch ) {
+	return textString.match( this.stringToRegex( stringsToMatch, false ) );
+};
+
+/**
+ * checks if the match on textStrings is not null. If it has matches returns the length.
+ * Otherwise it returns 0 (no matches).
+ * @param textString
+ * @param regex
+ * @returns {number}
+ */
+YoastSEO.StringHelper.prototype.countMatches = function( textString, regex ) {
+	return textString.match( regex ) !== null ? textString.match.length : 0;
+};
+
+/**
+ * builds regex from array with strings
+ * @param stringArray
+ * @returns {RegExp}
+ */
+YoastSEO.StringHelper.prototype.stringToRegex = function( stringArray, disableWordBoundary ) {
+	var regexString = "";
+	var wordBoundary = "\\b";
+	if ( disableWordBoundary ) {
+		wordBoundary = "";
+	}
+	for ( var i = 0; i &lt; stringArray.length; i++ ) {
+		if ( regexString.length > 0 ) {
+			regexString += "|";
+		}
+		regexString += wordBoundary + stringArray[ i ] + wordBoundary;
+	}
+	return new RegExp( regexString, "g" );
+};
+
+/**
+ * Strip extra spaces, replace duplicates with single space. Remove space at front / end of string
+ * @param textString
+ * @returns textString
+ */
+YoastSEO.StringHelper.prototype.stripSpaces = function( textString ) {
+
+	//replace multiple spaces with single space
+	textString = textString.replace( / {2,}/g, " " );
+
+	//remove first/last character if space
+	textString = textString.replace( /^\s+|\s+$/g, "" );
+	return textString;
+};
+
+/**
+ * adds escape characters to string
+ * @param textString
+ * @returns textString
+ */
+YoastSEO.StringHelper.prototype.addEscapeChars = function( textString ) {
+	return textString.replace( /[\-\[\]\/\{}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&amp;" );
+};
+
+/**
+ * removes all HTMLtags from input string, except h1-6, li, p and dd
+ * @param textString
+ * @returns textString
+ */
+YoastSEO.StringHelper.prototype.stripSomeTags = function( textString ) {
+
+	//remove tags, except li, p, h1-6, dd
+	textString = textString.replace(
+		/&lt;(?!li|\/li|p|\/p|h1|\/h1|h2|\/h2|h3|\/h3|h4|\/h4|h5|\/h5|h6|\/h6|dd).*?\>/g,
+		" "
+	);
+	textString = this.stripSpaces( textString );
+	return textString;
+};
+
+/**
+ * remove all HTMLtags from input string.
+ * @param textString
+ * @returns textString
+ */
+YoastSEO.StringHelper.prototype.stripAllTags = function( textString ) {
+
+	//remove all tags
+	textString = textString.replace( /(&lt;([^>]+)>)/ig, " " );
+
+	//remove &lt; and > if any are used
+	textString = textString.replace( /[&lt;>]/g, "" );
+	textString = this.stripSpaces( textString );
+	return textString;
+};
+
+/**
+ * Checks if the stringhelper is already initialized. Returns stringHelper.
+ *
+ * @returns {YoastSEO.StringHelper}
+ */
+YoastSEO.getStringHelper = function() {
+	if ( typeof YoastSEO.cachedStringHelper !== "object" ) {
+		YoastSEO.cachedStringHelper = new YoastSEO.StringHelper();
+	}
+	return YoastSEO.cachedStringHelper;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="YoastSEO.Analyzer.html">Analyzer</a></li><li><a href="YoastSEO.AnalyzeScorer.html">AnalyzeScorer</a></li><li><a href="YoastSEO.App.html">App</a></li><li><a href="YoastSEO.InputGenerator.html">InputGenerator</a></li><li><a href="YoastSEO.ScoreFormatter.html">ScoreFormatter</a></li><li><a href="YoastSEO.SnippetPreview.html">SnippetPreview</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Tue Aug 18 2015 11:13:26 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
