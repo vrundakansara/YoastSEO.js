@@ -1,0 +1,16 @@
+{
+  "name": "js-text-analysis-docs",
+  "homepage": "http://yoast.github.io/js-text-analysis",
+  "description": "The docs for js-text-analysis",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "yoast-js-text-analysis": "git@github.com:Yoast/js-text-analysis.git"
+  }
+}
