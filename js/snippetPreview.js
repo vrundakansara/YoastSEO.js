@@ -59,6 +59,7 @@ YoastSEO.SnippetPreview.prototype.formatTitle = function() {
 		title = this.refObj.config.sampleText.title;
 	}
 	title = this.refObj.stringHelper.stripAllTags( title );
+	title = YoastSEO.app.plugins._applyModifications( "snippet_title", title );
 	if ( this.refObj.rawData.keyword !== "" ) {
 		return this.formatKeyword( title );
 	}
@@ -101,6 +102,7 @@ YoastSEO.SnippetPreview.prototype.formatMeta = function() {
 	if ( meta === "" ) {
 		meta = this.getMetaText();
 	}
+	meta = YoastSEO.app.plugins._applyModifications( "snippet_meta", meta );
 	meta = this.refObj.stringHelper.stripAllTags( meta );
 	meta = meta.substring( 0, YoastSEO.analyzerConfig.maxMeta );
 	if ( this.refObj.rawData.keyword !== "" && meta !== "" ) {
