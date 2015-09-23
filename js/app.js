@@ -487,3 +487,13 @@ YoastSEO.initialize = function() {
 		setTimeout( YoastSEO.initialize, 50 );
 	}
 };
+
+/**
+ *
+ * @param funcName
+ * @param func
+ * @param score
+ */
+YoastSEO.App.prototype.addFunctionToPrototype = function( funcName, func, score ) {
+	YoastSEO.Analyzer.prototype[funcName] = func;
+};
