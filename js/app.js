@@ -172,6 +172,7 @@ YoastSEO.App.prototype.createSnippetPreview = function() {
 	this.snippetPreview = new YoastSEO.SnippetPreview( this );
 	this.bindEvent();
 	this.bindSnippetEvents();
+	this.additionalScores  = [];
 };
 
 /**
@@ -489,11 +490,13 @@ YoastSEO.initialize = function() {
 };
 
 /**
- *
+ * Adds function to the prototype
  * @param funcName
  * @param func
  * @param score
  */
 YoastSEO.App.prototype.addFunctionToPrototype = function( funcName, func, score ) {
 	YoastSEO.Analyzer.prototype[funcName] = func;
+	YoastSEO.App.additionalScores.concat( score );
 };
+

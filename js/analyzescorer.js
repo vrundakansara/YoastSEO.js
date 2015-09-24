@@ -20,7 +20,14 @@ YoastSEO.AnalyzeScorer = function( refObj ) {
 YoastSEO.AnalyzeScorer.prototype.init = function() {
 	var scoringConfig = new YoastSEO.AnalyzerScoring( this.i18n );
 	this.scoring = scoringConfig.analyzerScoring;
+	//todo maybe add additional scoring to the analyzerScoring before it is initialized
+	this.addScoring();
 };
+
+YoastSEO.AnalyzeScorer.prototype.addScoring = function() {
+	this.scoring.concat( YoastSEO.app.score );
+};
+
 
 /**
  * Starts the scoring by taking the resultObject from the analyzer. Then runs the scorequeue.
