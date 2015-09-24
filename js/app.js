@@ -73,6 +73,7 @@ YoastSEO.App = function( args ) {
 	window.YoastSEO.app = this;
 	this.config = args;
 	this.inputs = {};
+	this.additionalScores = [];
 	this.rawData = args.callbacks.getData();
 	this.constructI18n( args.translations );
 	this.loadQueue();
@@ -86,6 +87,7 @@ YoastSEO.App = function( args ) {
 		this.defineElements();
 	}
 	this.init();
+
 };
 
 /**
@@ -172,7 +174,6 @@ YoastSEO.App.prototype.createSnippetPreview = function() {
 	this.snippetPreview = new YoastSEO.SnippetPreview( this );
 	this.bindEvent();
 	this.bindSnippetEvents();
-	this.additionalScores  = [];
 };
 
 /**
@@ -497,6 +498,6 @@ YoastSEO.initialize = function() {
  */
 YoastSEO.App.prototype.addFunctionToPrototype = function( funcName, func, score ) {
 	YoastSEO.Analyzer.prototype[funcName] = func;
-	YoastSEO.App.additionalScores.concat( score );
+	YoastSEO.app.additionalScores.concat( score );
 };
 
