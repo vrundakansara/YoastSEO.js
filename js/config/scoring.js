@@ -437,4 +437,6 @@ YoastSEO.AnalyzerScoring = function( i18n ) {
             ]
         }
     ];
-}
+
+	this.analyzerScoring.concat( YoastSEO.app.additionalScores );
+};

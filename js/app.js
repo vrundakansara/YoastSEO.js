@@ -78,10 +78,8 @@ YoastSEO.App = function( args ) {
 	this.constructI18n( args.translations );
 	this.loadQueue();
 	this.stringHelper = new YoastSEO.StringHelper();
-
 	this.pluggable = new YoastSEO.Pluggable();
 	this.showLoadingDialog();
-
 	this.callbacks = this.config.callbacks;
 	if ( !this.config.ajax ) {
 		this.defineElements();
@@ -134,17 +132,6 @@ YoastSEO.App.prototype.refresh = function() {
 YoastSEO.App.prototype.loadQueue = function() {
 	if ( typeof this.queue === "undefined" ) {
 		this.queue = YoastSEO.analyzerConfig.queue;
-	}
-};
-
-/**
- * Adds function to the analyzer queue. Function must be in the Analyzer prototype to be added.
- *
- * @param {String} func Name of the function to add to the queue.
- */
-YoastSEO.App.prototype.addToQueue = function( func ) {
-	if ( typeof YoastSEO.Analyzer.prototype[ func ] === "function" ) {
-		this.queue.push( func );
 	}
 };
 
@@ -492,12 +479,23 @@ YoastSEO.initialize = function() {
 
 /**
  * Adds function to the prototype
- * @param funcName
- * @param func
- * @param score
+ * @param funcName {string}
+ * @param func {function}
+ * @param score {object}
  */
 YoastSEO.App.prototype.addFunctionToPrototype = function( funcName, func, score ) {
 	YoastSEO.Analyzer.prototype[funcName] = func;
-	YoastSEO.app.additionalScores.concat( score );
+	YoastSEO.app.additionalScores.push( score );
+	this.addToQueue( funcName );
 };
 
+/**
+ * Adds function to the analyzer queue. Function must be in the Analyzer prototype to be added.
+ *
+ * @param {String} func Name of the function to add to the queue.
+ */
+YoastSEO.App.prototype.addToQueue = function( func ) {
+	if ( typeof YoastSEO.Analyzer.prototype[ func ] === "function" ) {
+		YoastSEO.analyzerConfig.queue.push( func );
+	}
+};
