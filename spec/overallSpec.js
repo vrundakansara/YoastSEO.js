@@ -60,6 +60,14 @@ var textStrings = [
 		url: "url",
 		meta: "",
 		queue: ["firstParagraph"]
+	},
+	{
+		text: "äöüß äöüß bla bla bla test bla bla kidfa adf daf dfasd sdaf asdf adsfsd fasdfweqroiup uiop ui pio ewq äöüß äöüß bla bla bla test bla bla kidfa adf daf dfasd sdaf asdf adsfsd fasdfweqroiup uiop ui pio ewq äöüß äöüß bla bla bla test bla bla kidfa adf daf dfasd sdaf asdf adsfsd fasdfweqroiup uiop ui pio ewq äöüß äöüß bla bla bla test bla bla kidfa adf daf dfasd sdaf asdf adsfsd fasdfweqroiup uiop ui pio ewq äöüß äöüß bla bla bla test bla bla kidfa adf daf dfasd sdaf asdf adsfsd fasdfweqroiup uiop ui pio ewq bla",
+		pageTitle: "äöüß",
+		keyword: "\u00e4\u00f6\u00fc\u00df",
+		url: "url",
+		meta: "äöüß",
+		queue: ["keywordDensity"]
 	}
 ];
 
@@ -104,6 +112,12 @@ describe("a test running multiple textstrings", function(){
 		var keywordAnalyzer = Factory.buildAnalyzer( textStrings[6] );
 		var result = keywordAnalyzer.firstParagraph();
 		expect(result[0].result).toBe(1);
+	});
+
+	it("checks for keywords based on escaped unicode - should return 10 matches = keywordDensity = 10.0", function(){
+		var keywordAnalyzer = Factory.buildAnalyzer( textStrings[7] );
+		var result = keywordAnalyzer.keywordDensity();
+		expect(result[0].result).toBe("9.9");
 	});
 });
 
