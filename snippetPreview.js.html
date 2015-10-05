@@ -36,7 +36,9 @@ YoastSEO = ( "undefined" === typeof YoastSEO ) ? {} : YoastSEO;
 
 /**
  * defines the config and outputTarget for the YoastSEO.SnippetPreview
- * @param refObj
+ *
+ * @param {YoastSEO.App} refObj
+ *
  * @constructor
  */
 YoastSEO.SnippetPreview = function( refObj ) {
@@ -49,8 +51,8 @@ YoastSEO.SnippetPreview = function( refObj ) {
  */
 YoastSEO.SnippetPreview.prototype.init = function() {
 	if (
-		this.refObj.source.formattedData.pageTitle !== null &amp;&amp;
-		this.refObj.source.formattedData.cite !== null
+		this.refObj.rawData.pageTitle !== null &amp;&amp;
+		this.refObj.rawData.cite !== null
 	) {
 		this.output = this.htmlOutput();
 		this.renderOutput();
@@ -59,7 +61,8 @@ YoastSEO.SnippetPreview.prototype.init = function() {
 
 /**
  * creates html object to contain the strings for the snippetpreview
- * @returns {html object with html-strings}
+ *
+ * @returns {Object}
  */
 YoastSEO.SnippetPreview.prototype.htmlOutput = function() {
 	var html = {};
@@ -72,18 +75,19 @@ YoastSEO.SnippetPreview.prototype.htmlOutput = function() {
 
 /**
  * formats the title for the snippet preview. If title and pageTitle are empty, sampletext is used
- * @returns {formatted page title}
+ *
+ * @returns {String}
  */
 YoastSEO.SnippetPreview.prototype.formatTitle = function() {
-	var title = this.refObj.source.formattedData.snippetTitle;
+	var title = this.refObj.rawData.snippetTitle;
 	if ( title === "" ) {
-		title = this.refObj.source.formattedData.pageTitle;
+		title = this.refObj.rawData.pageTitle;
 	}
 	if ( title === "" ) {
 		title = this.refObj.config.sampleText.title;
 	}
 	title = this.refObj.stringHelper.stripAllTags( title );
-	if ( this.refObj.source.formattedData.keyword !== "" ) {
+	if ( this.refObj.rawData.keyword !== "" ) {
 		return this.formatKeyword( title );
 	}
 	return title;
@@ -94,7 +98,7 @@ YoastSEO.SnippetPreview.prototype.formatTitle = function() {
  * @returns formatted url
  */
 YoastSEO.SnippetPreview.prototype.formatUrl = function() {
-	var url = this.refObj.source.formattedData.url;
+	var url = this.refObj.rawData.baseUrl;
 
 	//removes the http(s) part of the url
 	url.replace( /https?:\/\//ig, "" );
@@ -106,7 +110,7 @@ YoastSEO.SnippetPreview.prototype.formatUrl = function() {
  * @returns formatted url
  */
 YoastSEO.SnippetPreview.prototype.formatCite = function() {
-	var cite = this.refObj.source.formattedData.snippetCite;
+	var cite = this.refObj.rawData.snippetCite;
 	cite = this.refObj.stringHelper.stripAllTags( cite );
 	if ( cite === "" ) {
 		cite = this.refObj.config.sampleText.url;
@@ -121,13 +125,13 @@ YoastSEO.SnippetPreview.prototype.formatCite = function() {
  * @returns formatted metatext
  */
 YoastSEO.SnippetPreview.prototype.formatMeta = function() {
-	var meta = this.refObj.source.formattedData.snippetMeta;
+	var meta = this.refObj.rawData.snippetMeta;
 	if ( meta === "" ) {
 		meta = this.getMetaText();
 	}
 	meta = this.refObj.stringHelper.stripAllTags( meta );
 	meta = meta.substring( 0, YoastSEO.analyzerConfig.maxMeta );
-	if ( this.refObj.source.formattedData.keyword !== "" &amp;&amp; meta !== "" ) {
+	if ( this.refObj.rawData.keyword !== "" &amp;&amp; meta !== "" ) {
 		return this.formatKeyword( meta );
 	}
 	return meta;
@@ -141,49 +145,41 @@ YoastSEO.SnippetPreview.prototype.formatMeta = function() {
  */
 YoastSEO.SnippetPreview.prototype.getMetaText = function() {
 	var metaText;
-	if ( typeof this.refObj.source.formattedData.excerpt !== "undefined" ) {
-		metaText = this.refObj.source.formattedData.excerpt.substring(
-			0,
-			YoastSEO.analyzerConfig.maxMeta
-		);
+	if ( typeof this.refObj.rawData.excerpt !== "undefined" ) {
+		metaText = this.refObj.rawData.excerpt;
 	}
 	if ( metaText === "" ) {
 		metaText = this.refObj.config.sampleText.meta;
-		if (
-			this.refObj.source.formattedData.keyword !== "" &amp;&amp;
-			this.refObj.source.formattedData.text !== ""
-		) {
-			var indexMatches = this.getIndexMatches();
-			var periodMatches = this.getPeriodMatches();
-			metaText = this.refObj.source.formattedData.text.substring(
-				0,
-				YoastSEO.analyzerConfig.maxMeta
-			);
-			var curStart = 0;
-			if ( indexMatches.length > 0 ) {
-				for ( var j = 0; j &lt; periodMatches.length; ) {
-					if ( periodMatches[ 0 ] &lt; indexMatches[ 0 ] ) {
-						curStart = periodMatches.shift();
-					} else {
-						if ( curStart > 0 ) {
-							curStart += 2;
-						}
-						break;
+	}
+	metaText = this.refObj.stringHelper.stripAllTags( metaText );
+	if (
+		this.refObj.rawData.keyword !== "" &amp;&amp;
+		this.refObj.rawData.text !== ""
+	) {
+		var indexMatches = this.getIndexMatches();
+		var periodMatches = this.getPeriodMatches();
+		metaText = metaText.substring(
+			0,
+			YoastSEO.analyzerConfig.maxMeta
+		);
+		var curStart = 0;
+		if ( indexMatches.length > 0 ) {
+			for ( var j = 0; j &lt; periodMatches.length; ) {
+				if ( periodMatches[ 0 ] &lt; indexMatches[ 0 ] ) {
+					curStart = periodMatches.shift();
+				} else {
+					if ( curStart > 0 ) {
+						curStart += 2;
 					}
+					break;
 				}
-				metaText = this.refObj.stringHelper.stripAllTags(
-					this.refObj.source.formattedData.text.substring(
-						curStart,
-						curStart + YoastSEO.analyzerConfig.maxMeta
-					)
-				);
 			}
 		}
 	}
 	if ( this.refObj.stringHelper.stripAllTags( metaText ) === "" ) {
 		return this.refObj.config.sampleText.meta;
 	}
-	return metaText;
+	return metaText.substring( 0, YoastSEO.analyzerConfig.maxMeta );
 };
 
 /**
@@ -195,8 +191,8 @@ YoastSEO.SnippetPreview.prototype.getIndexMatches = function() {
 	var i = 0;
 
 	//starts at 0, locates first match of the keyword.
-	var match = this.refObj.source.formattedData.text.indexOf(
-		this.refObj.source.formattedData.keyword,
+	var match = this.refObj.rawData.text.indexOf(
+		this.refObj.rawData.keyword,
 		i
 	);
 
@@ -205,9 +201,9 @@ YoastSEO.SnippetPreview.prototype.getIndexMatches = function() {
 		indexMatches.push( match );
 
 		//pushes location to indexMatches and increase i with the length of keyword.
-		i = match + this.refObj.source.formattedData.keyword.length;
-		match = this.refObj.source.formattedData.text.indexOf(
-			this.refObj.source.formattedData.keyword,
+		i = match + this.refObj.rawData.keyword.length;
+		match = this.refObj.rawData.text.indexOf(
+			this.refObj.rawData.keyword,
 			i
 		);
 	}
@@ -222,7 +218,7 @@ YoastSEO.SnippetPreview.prototype.getPeriodMatches = function() {
 	var periodMatches = [ 0 ];
 	var match;
 	var i = 0;
-	while ( ( match = this.refObj.source.formattedData.text.indexOf( ".", i ) ) > -1 ) {
+	while ( ( match = this.refObj.rawData.text.indexOf( ".", i ) ) > -1 ) {
 		periodMatches.push( match );
 		i = match + 1;
 	}
@@ -237,7 +233,7 @@ YoastSEO.SnippetPreview.prototype.getPeriodMatches = function() {
 YoastSEO.SnippetPreview.prototype.formatKeyword = function( textString ) {
 
 	//matches case insensitive and global
-	var replacer = new RegExp( this.refObj.source.formattedData.keyword, "ig" );
+	var replacer = new RegExp( this.refObj.rawData.keyword, "ig" );
 	return textString.replace( replacer, function( str ) {
 		return "&lt;strong>" + str + "&lt;/strong>";
 	} );
@@ -251,7 +247,7 @@ YoastSEO.SnippetPreview.prototype.formatKeyword = function( textString ) {
  * @returns {XML|string|void}
  */
 YoastSEO.SnippetPreview.prototype.formatKeywordUrl = function( textString ) {
-	var replacer = this.refObj.source.formattedData.keyword.replace( " ", "[-_]" );
+	var replacer = this.refObj.rawData.keyword.replace( " ", "[-_]" );
 
 	//matches case insensitive and global
 	replacer = new RegExp( replacer, "ig" );
@@ -416,13 +412,13 @@ YoastSEO.SnippetPreview.prototype.setFocusToEnd = function( elem ) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="YoastSEO.Analyzer.html">Analyzer</a></li><li><a href="YoastSEO.AnalyzeScorer.html">AnalyzeScorer</a></li><li><a href="YoastSEO.App.html">App</a></li><li><a href="YoastSEO.InputGenerator.html">InputGenerator</a></li><li><a href="YoastSEO.ScoreFormatter.html">ScoreFormatter</a></li><li><a href="YoastSEO.SnippetPreview.html">SnippetPreview</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="YoastSEO.Analyzer.html">Analyzer</a></li><li><a href="YoastSEO.AnalyzeScorer.html">AnalyzeScorer</a></li><li><a href="YoastSEO.App.html">App</a></li><li><a href="YoastSEO.InputGenerator.html">InputGenerator</a></li><li><a href="YoastSEO.Pluggable.html">Pluggable</a></li><li><a href="YoastSEO.ScoreFormatter.html">ScoreFormatter</a></li><li><a href="YoastSEO.SnippetPreview.html">SnippetPreview</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Tue Aug 18 2015 11:13:26 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Mon Oct 05 2015 18:31:30 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>
