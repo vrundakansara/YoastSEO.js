@@ -364,6 +364,8 @@ YoastSEO.App.prototype.runAnalyzer = function() {
 	this.analyzerData = this.modifyData( this.rawData );
 	this.analyzerData.i18n = this.i18n;
 	this.analyzerData.usedKeywords = this.config.usedKeywords;
+	this.analyzerData.postUrl = this.config.postUrl;
+	this.analyzerData.searchUrl = this.config.searchUrl;
 
 	if ( this.analyzerData.keyword === "" ) {
 		this.analyzerData.queue = [ "keyWordCheck", "wordCount", "fleschReading", "pageTitleLength", "urlStopwords", "metaDescription" ];
