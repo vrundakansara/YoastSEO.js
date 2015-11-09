@@ -4098,14 +4098,14 @@ YoastSEO.AnalyzerScoring = function( i18n ) {
                     text: i18n.dgettext('js-text-analysis', "No meta description has been specified, search engines will display copy from the page instead.")
                 },
                 {
-                    max: 120,
+                    max: 119,
                     score: 6,
 
                     /* translators: %1$d expands to the minimum length for the meta description, %2$d to the maximum length for the meta description */
                     text: i18n.dgettext('js-text-analysis', "The meta description is under %1$d characters, however up to %2$d characters are available.")
                 },
                 {
-                    min: 156,
+                    min: 157,
                     score: 6,
 
                     /* translators: %2$d expands to the maximum length for the meta description */
