@@ -47,3 +47,17 @@ describe("a test to check if the keyword occurs in the pagetitle", function(){
         expect(result[0].result.matches).toBe(0);
     });
 });
+
+titleKeywordArg4 = {
+	textString: "this is a default text",
+	keyword: "key-word",
+	pageTitle: "test with key-word"
+};
+
+describe("a test counting the number of characters in the pagetitle using hyphenated keywords", function(){
+	it("returns 1, since there is a keyword", function(){
+		var pagetitleAnalyzer4 = Factory.buildAnalyzer(titleKeywordArg4);
+		result = pagetitleAnalyzer4.pageTitleKeyword();
+		expect(result[0].result.matches).toBe(1);
+	});
+});
