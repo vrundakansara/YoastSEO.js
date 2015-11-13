@@ -214,7 +214,7 @@ YoastSEO.SnippetPreview.prototype.getPeriodMatches = function() {
 YoastSEO.SnippetPreview.prototype.formatKeyword = function( textString ) {
 
 	// removes characters from the keyword that could break the regex, or give unwanted results, includes the -
-	var keyword = this.refObj.rawData.keyword.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "" );
+	var keyword = this.refObj.rawData.keyword.replace( /[\'\"\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "" );
 
 	// Match keyword case-insensitively
 	var keywordRegex = new RegExp( "\\b" + keyword + "\\b", "ig" );
