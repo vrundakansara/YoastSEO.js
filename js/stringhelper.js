@@ -125,12 +125,14 @@ YoastSEO.StringHelper.prototype.stripAllTags = function( textString ) {
 
 /**
  * Removes all invalid characters from a certain keyword
+ * Replaces "'- with spaces, like we do in the text.
  *
  * @param {string} keyword The un-sanitized keyword.
  * @returns {string} The sanitized keyword.
  */
 YoastSEO.StringHelper.prototype.sanitizeKeyword = function( keyword ) {
-	keyword = keyword.replace( /[\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "" );
+	keyword = keyword.replace( /[\\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "" );
+	keyword = keyword.replace( /["'-]/g, " " );
 
 	keyword = this.stripAllTags( keyword );
 
