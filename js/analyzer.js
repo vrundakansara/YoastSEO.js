@@ -591,6 +591,9 @@ YoastSEO.Analyzer.prototype.firstParagraph = function() {
 			new RegExp( "[^]*?\n\n", "ig" )
 		);
 	}
+	if ( p === 0 ) {
+		p = this.stringHelper.countMatches( this.preProcessor.__store.cleanTextSomeTags, this.keywordRegex );
+	}
 	result[ 0 ].result = p;
 	return result;
 };
