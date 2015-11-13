@@ -562,8 +562,8 @@ YoastSEO.Analyzer.prototype.pageTitleKeyword = function() {
 	var result = [ { test: "pageTitleKeyword", result: { matches: 0, position: 0 } } ];
 	if ( typeof this.config.pageTitle !== "undefined" ) {
 		result[ 0 ].result.matches = this.stringHelper.countMatches(
-			this.config.pageTitle.toLocaleLowerCase(),
-			this.keywordRegexInverse
+			this.config.pageTitle.toLocaleLowerCase().replace( /['"-]/ig, " " ),
+			this.keywordRegex
 		);
 		result[ 0 ].result.position = this.config.pageTitle.indexOf( this.config.keyword );
 	}
@@ -645,7 +645,7 @@ YoastSEO.Analyzer.prototype.urlKeyword = function() {
 	var result = [ { test: "urlKeyword", result: 0 } ];
 	if ( typeof this.config.url !== "undefined" ) {
 		result[ 0 ].result = this.stringHelper.countMatches(
-			this.config.url, this.keywordRegexInverse
+			this.config.url.toLocaleLowerCase().replace( /['"-]/ig, " " ), this.keywordRegexInverse
 		);
 	}
 	return result;
