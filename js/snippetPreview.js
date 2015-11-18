@@ -106,6 +106,9 @@ YoastSEO.SnippetPreview.prototype.formatMeta = function() {
 		meta = this.getMetaText();
 	}
 	meta = this.refObj.stringHelper.stripAllTags( meta );
+	if ( this.refObj.rawData.show_date ) {
+		meta = this.refObj.rawData.post_date + " " + meta;
+	}
 	meta = meta.substring( 0, YoastSEO.analyzerConfig.maxMeta );
 	if ( this.refObj.rawData.keyword !== "" && meta !== "" ) {
 		return this.formatKeyword( meta );
