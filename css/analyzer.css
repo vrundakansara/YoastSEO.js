@@ -42,6 +42,11 @@
 
 }
 
+.snippet_container .desc_date {
+    float: left;
+    padding-right: 4px;
+}
+
 .snippet_container .url {
     font-size: 14px;
     line-height: 16px;
