@@ -249,6 +249,15 @@ YoastSEO.App.prototype.createSnippetPreviewMeta = function( target ) {
 	elem.className = "snippet_container";
 	elem.id = "meta_container";
 	target.appendChild( elem );
+	var metaDate = document.createElement( "span" );
+	metaDate.className = "desc";
+	metaDate.id = "snippet_date";
+	var date = "";
+	if ( this.rawData.show_date ) {
+		date = this.rawData.post_date + " - ";
+	}
+	metaDate.textContent = date;
+	elem.appendChild( metaDate );
 	var meta = document.createElement( "span" );
 	meta.className = "desc";
 	meta.id = "snippet_meta";
