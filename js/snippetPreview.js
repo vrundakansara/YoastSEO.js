@@ -106,10 +106,7 @@ YoastSEO.SnippetPreview.prototype.formatMeta = function() {
 		meta = this.getMetaText();
 	}
 	meta = this.refObj.stringHelper.stripAllTags( meta );
-	if ( this.refObj.rawData.show_date ) {
-		meta = this.refObj.rawData.post_date + " - " + meta;
-	}
-	meta = meta.substring( 0, YoastSEO.analyzerConfig.maxMeta );
+	meta = meta.substring( 0, this.refObj.config.maxMetaLength );
 	if ( this.refObj.rawData.keyword !== "" && meta !== "" ) {
 		return this.formatKeyword( meta );
 	}
@@ -142,7 +139,7 @@ YoastSEO.SnippetPreview.prototype.getMetaText = function() {
 		var periodMatches = this.getPeriodMatches();
 		metaText = metaText.substring(
 			0,
-			YoastSEO.analyzerConfig.maxMeta
+			this.refObj.config.maxMetaLength
 		);
 		var curStart = 0;
 		if ( indexMatches.length > 0 ) {
@@ -161,7 +158,7 @@ YoastSEO.SnippetPreview.prototype.getMetaText = function() {
 	if ( this.refObj.stringHelper.stripAllTags( metaText ) === "" ) {
 		return this.refObj.config.sampleText.meta;
 	}
-	return metaText.substring( 0, YoastSEO.analyzerConfig.maxMeta );
+	return metaText.substring( 0, this.refObj.config.maxMetaLength );
 };
 
 /**
@@ -296,12 +293,13 @@ YoastSEO.SnippetPreview.prototype.checkTextLength = function( ev ) {
 	var text = ev.currentTarget.textContent;
 	switch ( ev.currentTarget.id ) {
 		case "snippet_meta":
+			var maxLength = this.refObj.config.maxMetaLength;
 			ev.currentTarget.className = "desc";
-			if ( text.length > YoastSEO.analyzerConfig.maxMeta ) {
+			if ( text.length > maxLength ) {
 				YoastSEO.app.snippetPreview.unformattedText.snippet_meta = ev.currentTarget.textContent;
 				ev.currentTarget.textContent = text.substring(
 					0,
-					YoastSEO.analyzerConfig.maxMeta
+					maxLength
 				);
 
 			}

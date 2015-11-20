@@ -110,6 +110,11 @@ YoastSEO.App.prototype.extendConfig = function( args ) {
 	args.sampleText = this.extendSampleText( args.sampleText );
 	args.queue = args.queue || YoastSEO.analyzerConfig.queue;
 
+	args.maxMetaLength = YoastSEO.analyzerConfig.maxMeta;
+	if ( args.show_date === "1" ) {
+		args.maxMetaLength -= 16;
+	}
+
 	return args;
 };
 
@@ -249,15 +254,13 @@ YoastSEO.App.prototype.createSnippetPreviewMeta = function( target ) {
 	elem.className = "snippet_container";
 	elem.id = "meta_container";
 	target.appendChild( elem );
-	var metaDate = document.createElement( "span" );
-	metaDate.className = "desc";
-	metaDate.id = "snippet_date";
-	var date = "";
-	if ( this.rawData.show_date ) {
-		date = this.rawData.post_date + " - ";
+	if ( this.rawData.show_date === "1" ) {
+		var metaDate = document.createElement( "span" );
+		metaDate.className = "desc";
+		metaDate.id = "snippet_date";
+		metaDate.textContent = this.rawData.post_date + " - ";
+		elem.appendChild( metaDate );
 	}
-	metaDate.textContent = date;
-	elem.appendChild( metaDate );
 	var meta = document.createElement( "span" );
 	meta.className = "desc";
 	meta.id = "snippet_meta";
