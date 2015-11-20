@@ -65,14 +65,14 @@ YoastSEO.Analyzer.prototype.formatKeyword = function() {
 		// Creates new regex from keyword with global and caseinsensitive option,
 
 		this.keywordRegex = new RegExp( "\\b" +
-			this.preProcessor.replaceDiacritics( keyword.replace( /[-_]/, " " ) ) + "\\b",
+			this.preProcessor.replaceDiacritics( keyword.replace( /[-_]/g, " " ) ) + "\\b",
 			"ig"
 		);
 
 		// Creates new regex from keyword with global and caseinsensitive option,
 		// replaces space with -. Used for URL matching
 		this.keywordRegexInverse = new RegExp( "\\b" +
-			this.preProcessor.replaceDiacritics( keyword.replace( " ", "-" ) ) + "\\b",
+			this.preProcessor.replaceDiacritics( keyword.replace( /\s/g, "-" ) ) + "\\b",
 			"ig"
 		);
 	}
@@ -314,7 +314,7 @@ YoastSEO.Analyzer.prototype.fleschReading = function() {
 				(
 					1.015 *
 						(
-							this.preProcessor.__store.wordcountNoTags /
+							this.preProcessor.__store.wordcountNoDigits /
 							this.preProcessor.__store.sentenceCountNoTags
 						)
 					) -
@@ -322,7 +322,7 @@ YoastSEO.Analyzer.prototype.fleschReading = function() {
 							84.6 *
 						(
 					this.preProcessor.__store.syllablecount /
-					this.preProcessor.__store.wordcountNoTags
+					this.preProcessor.__store.wordcountNoDigits
 				)
 			)
 		)
