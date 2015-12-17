@@ -11,5 +11,9 @@ module.exports = {
 	cssmin: {
 		files: "<%= files.css %>",
 		tasks: [ "cssmin" ]
+	},
+	templates: {
+		files: "<%= files.templates %>",
+		tasks: [ "mustache" ]
 	}
 };

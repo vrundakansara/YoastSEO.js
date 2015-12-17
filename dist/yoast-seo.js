@@ -1181,110 +1181,17 @@ YoastSEO.App.prototype.refresh = function() {
  */
 YoastSEO.App.prototype.createSnippetPreview = function() {
 	var targetElement = document.getElementById( this.config.targets.snippet );
-	var div = document.createElement( "div" );
-	div.id = "snippet_preview";
-	targetElement.appendChild( div );
 
-	this.createSnippetPreviewEditIcon( div );
-	this.createSnippetPreviewTitle( div );
-	this.createSnippetPreviewUrl( div );
-	this.createSnippetPreviewMeta( div );
+	targetElement.innerHTML = Mustache.render( YoastSEO.templates.snippetEditor, {
+		title: this.config.sampleText.title,
+		baseUrl: this.config.sampleText.baseUrl,
+		snippetCite: this.config.sampleText.snippetCite,
+		meta: this.config.sampleText.meta
+	});
+
 	this.snippetPreview = new YoastSEO.SnippetPreview( this );
 	this.bindEvent();
 	this.bindSnippetEvents();
-};
-
-/**
- * creates the title elements in the snippetPreview and appends to target
- *
- * @param {HTMLElement} target The HTML element for the snippet preview
- */
-YoastSEO.App.prototype.createSnippetPreviewTitle = function( target ) {
-	var elem = document.createElement( "div" );
-	elem.className = "snippet_container";
-	elem.id = "title_container";
-	target.appendChild( elem );
-	var title;
-	title = document.createElement( "span" );
-	title.contentEditable = true;
-	title.textContent = this.config.sampleText.title;
-	title.className = "title";
-	title.id = "snippet_title";
-	elem.appendChild( title );
-	var sitename;
-	sitename = document.createElement( "span" );
-	sitename.className = "title";
-	sitename.id = "snippet_sitename";
-	elem.appendChild( sitename );
-};
-
-/**
- * creates the URL elements in the snippetPreview and appends to target
- *
- * @param {HTMLElement} target The HTML element for the snippet preview
- */
-YoastSEO.App.prototype.createSnippetPreviewUrl = function( target ) {
-	var elem = document.createElement( "div" );
-	elem.className = "snippet_container";
-	elem.id = "url_container";
-	target.appendChild( elem );
-	var baseUrl = document.createElement( "cite" );
-	baseUrl.className = "url urlBase";
-	baseUrl.id = "snippet_citeBase";
-	baseUrl.textContent = this.config.sampleText.baseUrl;
-	elem.appendChild( baseUrl );
-	var cite = document.createElement( "cite" );
-	cite.className = "url";
-	cite.id = "snippet_cite";
-	cite.textContent = this.config.sampleText.snippetCite;
-	cite.contentEditable = true;
-	elem.appendChild( cite );
-};
-
-/**
- * creates the meta description elements in the snippetPreview and appends to target
- *
- * @param {HTMLElement} target The HTML element for the snippet preview
- */
-YoastSEO.App.prototype.createSnippetPreviewMeta = function( target ) {
-	var elem = document.createElement( "div" );
-	elem.className = "snippet_container";
-	elem.id = "meta_container";
-	target.appendChild( elem );
-	var meta = document.createElement( "span" );
-	meta.className = "desc";
-	meta.id = "snippet_meta";
-	meta.contentEditable = true;
-	meta.textContent = this.config.sampleText.meta;
-	elem.appendChild( meta );
-};
-
-/**
- * Creates an edit icon inside the target snippet preview div
- *
- * @param {HTMLElement} snippetPreview The snippet preview element
- */
-YoastSEO.App.prototype.createSnippetPreviewEditIcon = function( snippetPreview ) {
-	var editIcon;
-
-	editIcon = document.createElement( "div" );
-	editIcon.className = "edit-icon";
-
-	snippetPreview.appendChild( editIcon );
-};
-
-/**
- * Creates an edit icon in a element with a certain ID
- *
- * @param {HTMLElement} elem The element to append the edit icon to.
- * @param {String} id The ID to give this edit icon.
- */
-YoastSEO.App.prototype.createEditIcon = function( elem, id ) {
-	var div = document.createElement( "div" );
-	div.className = "editIcon";
-	div.id = "editIcon_" + id;
-	elem.appendChild( div );
-
 };
 
 /**
@@ -2926,7 +2833,10 @@ YoastSEO.getStringHelper = function() {
 	return YoastSEO.cachedStringHelper;
 };
 
-;YoastSEO = ( 'undefined' === typeof YoastSEO ) ? {} : YoastSEO;(function() {/**
+;YoastSEO = ( 'undefined' === typeof YoastSEO ) ? {} : YoastSEO; YoastSEO.templates = {
+    "snippetEditor" : '<div id="snippet_preview"><div class="edit-icon"></div><div class="snippet_container" id="title_container"><span contenteditable="true" class="title" id="snippet_title">{{title}}</span><span class="title" id="snippet_sitename"></span></div><div class="snippet_container" id="url_container"><cite class="url urlBase" id="snippet_citeBase">{{baseUrl}}</cite><cite class="url" id="snippet_cite" contenteditable="true">{{snippetCite}}</cite></div><div class="snippet_container" id="meta_container"><span class="desc" id="snippet_meta" contenteditable="true">{{meta}}</span></div></div>',
+    "done": "true"
+  };;YoastSEO = ( 'undefined' === typeof YoastSEO ) ? {} : YoastSEO;(function() {/**
  * @preserve jed.js https://github.com/SlexAxton/Jed
  */
 /*

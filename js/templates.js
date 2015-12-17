@@ -1,0 +1,4 @@
+YoastSEO = ( 'undefined' === typeof YoastSEO ) ? {} : YoastSEO; YoastSEO.templates = {
+    "snippetEditor" : '<div id="snippet_preview"><div class="edit-icon"></div><div class="snippet_container" id="title_container"><span contenteditable="true" class="title" id="snippet_title">{{title}}</span><span class="title" id="snippet_sitename"></span></div><div class="snippet_container" id="url_container"><cite class="url urlBase" id="snippet_citeBase">{{baseUrl}}</cite><cite class="url" id="snippet_cite" contenteditable="true">{{snippetCite}}</cite></div><div class="snippet_container" id="meta_container"><span class="desc" id="snippet_meta" contenteditable="true">{{meta}}</span></div></div>',
+    "done": "true"
+  };

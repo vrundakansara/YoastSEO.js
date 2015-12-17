@@ -21,6 +21,7 @@ module.exports = function( grunt ) {
 				"<%= files.grunt %>"
 			],
 			css: "<%= paths.css %>/*.css",
+			templates: "templates/*.mustache",
 			jed: "node_modules/jed/jed.js",
 			get config() {
 				return project.paths.config + "*.js";
