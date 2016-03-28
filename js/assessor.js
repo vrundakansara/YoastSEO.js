@@ -2,31 +2,92 @@ var Researcher = require( "./researcher.js" );
 var Paper = require( "./values/Paper.js" );
 
 var InvalidTypeError = require( "./errors/invalidType" );
-
 var MissingArgument = require( "./errors/missingArgument" );
 var isUndefined = require( "lodash/isUndefined" );
 var forEach = require( "lodash/forEach" );
 
+var wordCount = require( "./assessments/countWords.js" );
+var urlLength = require( "./assessments/urlIsTooLong.js" );
+var fleschReading = require( "./assessments/calculateFleschReading.js" );
+var linkCount = require( "./assessments/getLinkStatistics.js" );
+var pageTitleKeyword = require( "./assessments/pageTitleKeyword.js" );
+var subHeadings = require( "./assessments/matchKeywordInSubheading.js" );
+var keywordDensity = require( "./assessments/keywordDensity.js" );
+var stopwordKeywordCount = require( "./assessments/stopWordsInKeyword.js" );
+var urlStopwords = require( "./assessments/stopWordsInUrl.js" );
+var metaDescriptionLength = require( "./assessments/metaDescriptionLength.js" );
+var keyphraseSizeCheck = require( "./assessments/keyphraseLength.js" );
+var metaDescriptionKeyword = require ( "./assessments/metaDescriptionKeyword.js" );
+var imageCount = require( "./assessments/imageCount.js" );
+var urlKeyword = require( "./assessments/keywordInUrl.js" );
+var firstParagraph = require( "./assessments/firstParagraph.js" );
+var pageTitleLength = require( "./assessments/pageTitleLength.js" );
+
 var ScoreRating = 9;
 
 //assessments
-var assessments = {};
-assessments.wordCount = require( "./assessments/countWords.js" );
-assessments.urlLength = require( "./assessments/urlIsTooLong.js" );
-assessments.fleschReading = require( "./assessments/calculateFleschReading.js" );
-assessments.linkCount = require( "./assessments/getLinkStatistics.js" );
-assessments.pageTitleKeyword = require( "./assessments/pageTitleKeyword.js" );
-assessments.subHeadings = require( "./assessments/matchKeywordInSubheading.js" );
-assessments.keywordDensity = require( "./assessments/keywordDensity.js" );
-assessments.stopwordKeywordCount = require( "./assessments/stopWordsInKeyword.js" );
-assessments.urlStopwords = require( "./assessments/stopWordsInUrl.js" );
-assessments.metaDescriptionLength = require( "./assessments/metaDescriptionLength.js" );
-assessments.keyphraseSizeCheck = require( "./assessments/keyphraseLength.js" );
-assessments.metaDescriptionKeyword = require ( "./assessments/metaDescriptionKeyword.js" );
-assessments.imageCount = require( "./assessments/imageCount.js" );
-assessments.urlKeyword = require( "./assessments/keywordInUrl.js" );
-assessments.firstParagraph = require( "./assessments/firstParagraph.js" );
-assessments.pageTitleLength = require( "./assessments/pageTitleLength.js" );
+var assessments = {
+	wordCount: {
+		callback: wordCount
+	},
+	urlLength: {
+		callback: urlLength
+	},
+	fleschReading: {
+		callback: fleschReading,
+		requirements: function( paper ) {
+			return paper.hasText();
+		}
+	},
+	linkCount: {
+		callback: linkCount
+	},
+	pageTitleKeyword: {
+		callback: pageTitleKeyword,
+		requirements: function( paper ) { return paper.hasKeyword(); }
+	},
+	subHeadings: {
+		callback: subHeadings
+	},
+	keywordDensity: {
+		callback: keywordDensity,
+		requirements: function( paper ) {
+
+			// TODO also add the countWords check
+			return paper.hasKeyword() && paper.hasText();
+		}
+	},
+	stopwordKeywordCount: {
+		callback: stopwordKeywordCount
+	},
+	urlStopwords: {
+		callback: urlStopwords
+	},
+	metaDescriptionLength: {
+		callback: metaDescriptionLength
+	},
+	keyphraseSizeCheck: {
+		callback: keyphraseSizeCheck,
+		requirements: function( paper ) { return paper.hasKeyword(); }
+	},
+	metaDescriptionKeyword: {
+		callback: metaDescriptionKeyword
+	},
+	imageCount: {
+		callback: imageCount
+	},
+	urlKeyword: {
+		callback: urlKeyword,
+		requirements: function( paper ) { return paper.hasUrl() && paper.hasKeyword(); }
+	},
+	firstParagraph: {
+		callback: firstParagraph
+	},
+	pageTitleLength: {
+		callback: pageTitleLength,
+		requirements: function( paper ) { return paper.hasTitle(); }
+	}
+};
 
 /**
  * Creates the Assessor
@@ -70,6 +131,18 @@ Assessor.prototype.getAvailableAssessments = function() {
 	return assessments;
 };
 
+Assessor.prototype.hasRequirements = function( assessment ) {
+	return assessment.hasOwnProperty( "requirements" );
+};
+
+Assessor.prototype.requirementsAreSatisfied = function( paper, assessment ) {
+	if ( this.hasRequirements( assessment ) ) {
+		return assessment.requirements( paper ) === true;
+	}
+
+	return true;
+};
+
 /**
  * Runs the researches defined in the tasklist or the default researches.
  * @param {Paper} paper The paper to run assessments on.
@@ -77,16 +150,19 @@ Assessor.prototype.getAvailableAssessments = function() {
 Assessor.prototype.assess = function( paper ) {
 	this.verifyPaper( paper );
 	var researcher = new Researcher( paper );
-
 	var assessments = this.getAvailableAssessments();
+
 	this.results = [];
 	forEach( assessments, function( assessment, assessmentName ) {
-		this.results.push(
-			{
-				name: assessmentName,
-				result: assessment( paper, researcher, this.i18n )
-			}
-		);
+		if ( !this.requirementsAreSatisfied( paper, assessment ) ) {
+			return;
+		}
+
+		this.results.push( {
+			name: assessmentName,
+			result: assessment.callback( paper, researcher, this.i18n )
+		} );
+
 	}.bind( this ) );
 };
 
@@ -96,12 +172,14 @@ Assessor.prototype.assess = function( paper ) {
  */
 Assessor.prototype.getValidResults = function() {
 	var validResults = [];
+
 	forEach( this.results, function( assessmentResults ) {
 		if ( !this.isValidResult( assessmentResults.result ) ) {
 			return;
 		}
 		validResults.push( assessmentResults );
 	}.bind( this ) );
+
 	return validResults;
 };
 

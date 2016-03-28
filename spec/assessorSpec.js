@@ -25,7 +25,7 @@ var assessor = new Assessor( i18n );
 describe ( "running assessments in the assessor", function(){
 	it( "runs assessments", function(){
 		assessor.assess( mockPaper );
-		expect( assessor.getValidResults().length ).toBe( 12 );
+		expect( assessor.getValidResults().length ).toBe( 7 );
 	})
 });
 

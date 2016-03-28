@@ -15,6 +15,7 @@ var Jed = require( "jed" );
 
 var Analyzer = require( "./analyzer.js" );
 var Researcher = require( "./researcher.js" );
+var Assessor = require( "./assessor.js" );
 var ScoreFormatter = require( "./scoreFormatter.js" );
 var Pluggable = require( "./pluggable.js" );
 var analyzerConfig = require( "./config/config.js" );
@@ -445,7 +446,7 @@ App.prototype.runAnalyzer = function() {
 		this.pluggable._addPluginTests( this.pageAnalyzer );
 	}
 
-	this.pageAnalyzer.runQueue();
+//	this.pageAnalyzer.runQueue();
 	this.scoreFormatter = new ScoreFormatter( {
 		scores: this.pageAnalyzer.analyzeScorer.__score,
 		overallScore: this.pageAnalyzer.analyzeScorer.__totalScore,
