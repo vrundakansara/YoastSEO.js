@@ -15,7 +15,6 @@ var Jed = require( "jed" );
 
 var Analyzer = require( "./analyzer.js" );
 var Researcher = require( "./researcher.js" );
-var Assessor = require( "./assessor.js" );
 var ScoreFormatter = require( "./scoreFormatter.js" );
 var Pluggable = require( "./pluggable.js" );
 var analyzerConfig = require( "./config/config.js" );

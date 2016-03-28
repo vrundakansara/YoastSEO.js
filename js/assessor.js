@@ -44,7 +44,9 @@ var assessments = {
 	},
 	pageTitleKeyword: {
 		callback: pageTitleKeyword,
-		requirements: function( paper ) { return paper.hasKeyword(); }
+		requirements: function( paper ) {
+			return paper.hasKeyword();
+		}
 	},
 	subHeadings: {
 		callback: subHeadings
@@ -68,7 +70,9 @@ var assessments = {
 	},
 	keyphraseSizeCheck: {
 		callback: keyphraseSizeCheck,
-		requirements: function( paper ) { return paper.hasKeyword(); }
+		requirements: function( paper ) {
+			return paper.hasKeyword();
+		}
 	},
 	metaDescriptionKeyword: {
 		callback: metaDescriptionKeyword
@@ -78,14 +82,18 @@ var assessments = {
 	},
 	urlKeyword: {
 		callback: urlKeyword,
-		requirements: function( paper ) { return paper.hasUrl() && paper.hasKeyword(); }
+		requirements: function( paper ) {
+			return paper.hasUrl() && paper.hasKeyword();
+		}
 	},
 	firstParagraph: {
 		callback: firstParagraph
 	},
 	pageTitleLength: {
 		callback: pageTitleLength,
-		requirements: function( paper ) { return paper.hasTitle(); }
+		requirements: function( paper ) {
+			return paper.hasTitle();
+		}
 	}
 };
 
