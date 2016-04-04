@@ -283,6 +283,8 @@ Pluggable.prototype._applyModifications = function( modification, data, context 
 		callChain.sort( function( a, b ) {
 			return a.priority - b.priority;
 		} );
+
+		console.log( 'Yo' );
 		forEach( callChain, function( callableObject ) {
 			var callable = callableObject.callable;
 			var newData = callable( data, context );
