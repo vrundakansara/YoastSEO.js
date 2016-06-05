@@ -7,7 +7,6 @@ var matchWordInSentence = require( "../stringProcessing/matchWordInSentence.js" 
 
 var map = require( "lodash/map" );
 var forEach = require( "lodash/forEach" );
-var includes = require( "lodash/includes" );
 
 var exclusionWords = syllableArray().exclusionWords;
 var exclusionWordsRegexes = map( exclusionWords, function( exclusionWord ) {
@@ -31,7 +30,7 @@ var countExclusionSyllables = function( text ) {
 	text = text.toLocaleLowerCase();
 
 	forEach( exclusionWords, function( exclusionWord ) {
-		if ( matchWordInSentence( exclusionWord.word, text) ) {
+		if ( matchWordInSentence( exclusionWord.word, text ) ) {
 			count += exclusionWord.syllables;
 		}
 	} );
