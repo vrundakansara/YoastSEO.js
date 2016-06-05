@@ -3,9 +3,11 @@
 var cleanText = require( "../stringProcessing/cleanText.js" );
 var syllableArray = require( "../config/syllables.js" );
 var arrayToRegex = require( "../stringProcessing/createRegexFromArray.js" );
+var matchWordInSentence = require( "../stringProcessing/matchWordInSentence.js" );
 
 var map = require( "lodash/map" );
 var forEach = require( "lodash/forEach" );
+var includes = require( "lodash/includes" );
 
 var exclusionWords = syllableArray().exclusionWords;
 var exclusionWordsRegexes = map( exclusionWords, function( exclusionWord ) {
@@ -25,13 +27,12 @@ var subtractSyllablesRegex = arrayToRegex( syllableArray().subtractSyllables, tr
  * @returns {number} The number of syllables found in the exclusionwords
  */
 var countExclusionSyllables = function( text ) {
-	var count = 0, matches;
+	var count = 0;
+	text = text.toLocaleLowerCase();
 
-	forEach( exclusionWordsRegexes, function( exclusionWordRegex ) {
-		matches = text.match( exclusionWordRegex.regex );
-
-		if ( matches !== null ) {
-			count += ( matches.length * exclusionWordRegex.syllables );
+	forEach( exclusionWords, function( exclusionWord ) {
+		if ( matchWordInSentence( exclusionWord.word, text) ) {
+			count += exclusionWord.syllables;
 		}
 	} );
 
@@ -100,12 +101,14 @@ var countAdvancedSyllables = function( text, operator ) {
 		default:
 			break;
 	}
+
 	for ( var i = 0; i < words.length; i++ ) {
 		matches = words[ i ].match( regex );
 		if ( matches !== null ) {
 			count += matches.length;
 		}
 	}
+
 	return count;
 };
 
@@ -118,6 +121,7 @@ var countAdvancedSyllables = function( text, operator ) {
  */
 module.exports = function( text ) {
 	var count = 0;
+
 	count += countExclusionSyllables( text );
 
 	text = removeExclusionWords( text );

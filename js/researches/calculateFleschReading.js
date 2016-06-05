@@ -5,7 +5,10 @@ var stripNumbers = require( "../stringProcessing/stripNumbers.js" );
 var stripHTMLTags = require( "../stringProcessing/stripHTMLTags.js" );
 var countSentences = require( "../stringProcessing/countSentences.js" );
 var countWords = require( "../stringProcessing/countWords.js" );
+var getSentences = require( "../stringProcessing/getSentences.js" );
 var countSyllables = require( "../stringProcessing/countSyllables.js" );
+
+var forEach = require( "lodash/forEach" );
 
 /**
  * This calculates the fleschreadingscore for a given text
@@ -27,7 +30,12 @@ module.exports = function( paper ) {
 
 	text = stripNumbers( text );
 	var sentenceCount = countSentences( text );
-	var syllableCount = countSyllables( text );
+	var syllableCount = 0;
+
+	forEach( getSentences( text ), function( word ) {
+		syllableCount += countSyllables( word );
+	} );
+
 	var score = 206.835 - ( 1.015 * ( wordCount / sentenceCount ) ) - ( 84.6 * ( syllableCount / wordCount ) );
 
 	return score.toFixed( 1 );

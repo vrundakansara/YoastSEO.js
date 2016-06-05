@@ -1,5 +1,6 @@
 var getWords = require( "../stringProcessing/getWords.js" );
 var countSyllables = require( "../stringProcessing/countSyllables.js" );
+var forEach = require( "lodash/forEach" );
 
 /**
  * Calculates the complexity of words in a text, returns each words with their complexity.
@@ -9,9 +10,11 @@ var countSyllables = require( "../stringProcessing/countSyllables.js" );
 module.exports = function( paper ) {
 	var words = getWords( paper.getText() );
 	var wordComplexity = [];
-	words.map( function( word ) {
+
+	forEach( words, function( word ) {
 		wordComplexity.push( { word: word, complexity: countSyllables( word ) } );
 	} );
+
 	return wordComplexity;
 };
 
