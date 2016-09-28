@@ -1,5 +1,5 @@
 var getSubheadingsContents = require( "../stringProcessing/getSubheadings.js" ).getSubheadingContents;
-var stripTextBlocks = require ( "../stringProcessing/stripTextBlocks.js" );
+var stripTextBlocks = require( "../stringProcessing/stripTextBlocks.js" );
 
 /**
  * Checks if there is a subheading present in the text

@@ -1,6 +1,6 @@
 var getSubheadingTexts = require( "../stringProcessing/getSubheadingTexts.js" );
 var countWords = require( "../stringProcessing/countWords.js" );
-var stripTextBlocks = require ( "../stringProcessing/stripTextBlocks.js" );
+var stripTextBlocks = require( "../stringProcessing/stripTextBlocks.js" );
 
 var forEach = require( "lodash/forEach" );
 

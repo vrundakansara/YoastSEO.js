@@ -1,7 +1,7 @@
 var getWords = require( "../stringProcessing/getWords.js" );
 var countSyllables = require( "../stringProcessing/syllables/count.js" );
 var getSentences = require( "../stringProcessing/getSentences.js" );
-var stripTextBlocks = require ( "../stringProcessing/stripTextBlocks.js" );
+var stripTextBlocks = require( "../stringProcessing/stripTextBlocks.js" );
 
 var map = require( "lodash/map" );
 var forEach = require( "lodash/forEach" );

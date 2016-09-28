@@ -3,7 +3,7 @@ var getWords = require( "../stringProcessing/getWords.js" );
 var stripSpaces = require( "../stringProcessing/stripSpaces.js" );
 var stripTags = require( "../stringProcessing/stripHTMLTags.js" ).stripFullTags;
 var getFirstWordExceptions = require( "../helpers/getFirstWordExceptions.js" );
-var stripTextBlocks = require ( "../stringProcessing/stripTextBlocks.js" );
+var stripTextBlocks = require( "../stringProcessing/stripTextBlocks.js" );
 
 var isEmpty = require( "lodash/isEmpty" );
 var forEach = require( "lodash/forEach" );
