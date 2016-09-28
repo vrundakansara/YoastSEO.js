@@ -25,5 +25,10 @@ describe( "gets the length of subheadings", function() {
 		expect( subHeadingTextLength( mockPaper)[ 1 ].wordCount ).toBe( 10 );
 		expect( subHeadingTextLength( mockPaper).length ).toBe( 2 );
 	} );
+
+	it( "returns an array with lengths", function() {
+		var mockPaper = new Paper( "<h1>test</h1>one two three<pre>4</pre>" );
+		expect( subHeadingTextLength( mockPaper )[ 0 ].wordCount ).toBe( 3 );
+	} );
 } );
 

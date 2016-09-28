@@ -360,6 +360,14 @@ describe( "detecting passive voice in sentences", function() {
 		} );
 	});
 
+	it( "excludes codeblocks", function() {
+		paper = new Paper( "<blockquote>get los</blockquote> No passive" );
+		expect( passiveVoice( paper ) ).toEqual( {
+			total: 1,
+			passives: []
+		} );
+	});
+
 	it( "returns no passive sentence when the subsentence has no auxiliary, when the auxiliary is used multiple times", function () {
 		// Passive: no passive, auxiliary: was
 		paper = new Paper( "He thought she was the one who knew about the six buried in his back yard, but he was wrong." );

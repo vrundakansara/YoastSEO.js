@@ -271,4 +271,21 @@ describe("a test for finding transition words from a string", function() {
 
 		expect( result ).toEqual( expected );
 	});
+
+	it( "works with code tags exclusion", function() {
+		// Transition word: what’s more.
+		mockPaper = new Paper( "what’s more<code> and then</code>", {} );
+		result = transitionWordsResearch( mockPaper );
+
+		expect( result ).toEqual( {
+			totalSentences: 1,
+			sentenceResults: [
+				{
+					sentence: "what’s more",
+					transitionWords: [ "what's more" ]
+				}
+			],
+			transitionWordSentences: 1
+		} );
+	});
 } );

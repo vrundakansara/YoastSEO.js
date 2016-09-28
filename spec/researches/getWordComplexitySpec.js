@@ -13,5 +13,9 @@ describe( "A function for getting the syllables per word",  function(){
 		mockPaper = new Paper( "strawberry cake" );
 		expect( wordComplexity( mockPaper )[ 0 ].words[ 0 ].complexity ).toBe( 3 );
 		expect( wordComplexity( mockPaper )[ 0 ].words[ 1 ].complexity ).toBe( 1 );
+
+		mockPaper = new Paper( "strawberry <pre>short</pre>cake" );
+		expect( wordComplexity( mockPaper )[ 0 ].words[ 0 ].complexity ).toBe( 3 );
+		expect( wordComplexity( mockPaper )[ 0 ].words[ 1 ].complexity ).toBe( 1 );
 	} );
 } );
