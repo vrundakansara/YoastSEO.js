@@ -4,6 +4,7 @@ var stripSpaces = require( "../stringProcessing/stripSpaces.js" );
 var stripHTMLTags = require( "../stringProcessing/stripHTMLTags.js" ).stripFullTags;
 var matchWordInSentence = require( "../stringProcessing/matchWordInSentence.js" );
 var normalizeSingleQuotes = require( "../stringProcessing/quotes.js" ).normalizeSingle;
+var stripTextBlocks = require ( "../stringProcessing/stripTextBlocks.js" );
 
 var nonverbEndingEd = require( "./english/passivevoice-english/non-verb-ending-ed.js" )();
 var determiners = require( "./english/passivevoice-english/determiners.js" )();
@@ -330,7 +331,7 @@ var determinePassives = function( subSentence ) {
  * @returns {object} The number of passives found in the text and the passive sentences.
  */
 module.exports = function( paper ) {
-	var text = paper.getText();
+	var text = stripTextBlocks( paper.getText() );
 	var sentences = getSentences( text );
 	var passiveSentences = [];
 

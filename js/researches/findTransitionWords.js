@@ -3,6 +3,7 @@ var getSentences = require( "../stringProcessing/getSentences.js" );
 var matchWordInSentence = require( "../stringProcessing/matchWordInSentence.js" );
 var normalizeSingleQuotes = require( "../stringProcessing/quotes.js" ).normalizeSingle;
 var getTransitionWords = require( "../helpers/getTransitionWords.js" );
+var stripTextBlocks = require ( "../stringProcessing/stripTextBlocks.js" );
 
 var forEach = require( "lodash/forEach" );
 var filter = require( "lodash/filter" );
@@ -87,7 +88,8 @@ var checkSentencesForTransitionWords = function( sentences, transitionWords ) {
 module.exports = function( paper ) {
 	var locale = paper.getLocale();
 	var transitionWords = getTransitionWords( locale );
-	var sentences = getSentences( paper.getText() );
+	var text = stripTextBlocks( paper.getText() );
+	var sentences = getSentences( text );
 	var sentenceResults = checkSentencesForTransitionWords( sentences, transitionWords );
 
 	return {

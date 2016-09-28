@@ -1,5 +1,7 @@
 var getSubheadingTexts = require( "../stringProcessing/getSubheadingTexts.js" );
 var countWords = require( "../stringProcessing/countWords.js" );
+var stripTextBlocks = require ( "../stringProcessing/stripTextBlocks.js" );
+
 var forEach = require( "lodash/forEach" );
 
 /**
@@ -8,7 +10,7 @@ var forEach = require( "lodash/forEach" );
  * @returns {Array} The array with the length of each subheading.
  */
 module.exports = function( paper ) {
-	var text = paper.getText();
+	var text = stripTextBlocks( paper.getText() );
 
 	var matches = getSubheadingTexts( text );
 

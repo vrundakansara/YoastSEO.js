@@ -5,6 +5,7 @@ var countSentences = require( "../stringProcessing/countSentences.js" );
 var countWords = require( "../stringProcessing/countWords.js" );
 var countSyllables = require( "../stringProcessing/syllables/count.js" );
 var formatNumber = require( "../helpers/formatNumber.js" );
+var stripTextBlocks = require ( "../stringProcessing/stripTextBlocks.js" );
 
 var getLanguage = require( "../helpers/getLanguage.js" );
 
@@ -29,7 +30,7 @@ var getAverage = function( total, amount ) {
  */
 module.exports = function( paper ) {
 	var score;
-	var text = paper.getText();
+	text = stripTextBlocks( paper.getText() );
 	var locale = paper.getLocale();
 	var language = getLanguage( locale );
 	if ( text === "" ) {
