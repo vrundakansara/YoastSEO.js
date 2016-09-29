@@ -161,4 +161,10 @@ describe( "gets the sentence beginnings and the count of consecutive duplicates.
 		var mockPaper = new Paper( '<img class="alignnone wp-image-514079 size-full" src="https://yoast-mercury.s3.amazonaws.com/uploads/2015/10/Twitter_analytics_FI.png" alt="" width="1200" height="628" />' );
 		expect( sentenceBeginnings( mockPaper ) ).toEqual( [] );
 	} );
+
+	it( "returns an object with English sentence beginnings when blockquotes are used", function() {
+		var mockPaper = new Paper( "Sentence 1. SENTENCE 2.<blockquote>Something else</blockquote> Sentence 3." );
+		expect( sentenceBeginnings( mockPaper )[ 0 ].word ).toBe( "sentence", { locale: 'en_US'} );
+		expect( sentenceBeginnings( mockPaper )[ 0 ].count ).toBe( 2 );
+	});
 } );
