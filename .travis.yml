@@ -7,9 +7,10 @@ cache:
     - node_modules
 
 before_script:
+- npm install -g yarnpkg
 - npm install -g grunt-cli
 - npm install -g codeclimate-test-reporter
-- npm install
+- yarn
 
 script:
 - grunt build:jst
