@@ -9,8 +9,9 @@ cache:
     - node_modules
 
 install:
+- npm install -g yarnpkg
 - npm install -g grunt-cli
-- npm install
+- yarn
 
 before_script:
 - grunt build:jst
