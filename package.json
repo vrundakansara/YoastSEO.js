@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "jed": "^1.1.0",
-    "lodash": "^4.14.1",
+    "lodash": "^4.16.5",
     "sassdash": "^0.8.1",
     "tokenizer2": "^2.0.0"
   }
