@@ -803,7 +803,7 @@ SnippetPreview.prototype.formatKeywordUrl = function( textString ) {
 SnippetPreview.prototype.renderOutput = function() {
 	this.element.rendered.title.innerHTML = this.output.title;
 	this.element.rendered.urlPath.innerHTML = this.output.cite;
-	if( this.output.breadcrumb !== "" ){
+	if( this.output.breadcrumb !== "" ) {
 		this.element.rendered.urlPath.innerHTML = "\u00A0" + this.output.breadcrumb;
 	}
 	this.element.rendered.urlBase.innerHTML = this.output.url;
