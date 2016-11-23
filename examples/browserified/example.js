@@ -22,7 +22,10 @@ var setLocale = function() {
 
 window.onload = function() {
 	var snippetPreview = new SnippetPreview({
-		targetElement: document.getElementById( "snippet" )
+		targetElement: document.getElementById( "snippet" ),
+		data: {
+			breadcrumb: [ "example", "category", "post" ]
+		},
 	});
 
 	var app = new App({

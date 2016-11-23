@@ -26,6 +26,7 @@ var defaults = {
 		urlPath: "",
 		titleWidth: 0,
 		metaHeight: 0,
+		breadcrumb: [],
 	},
 	placeholder: {
 		title: "This is an example title - edit by clicking here",
@@ -40,6 +41,7 @@ var defaults = {
 	callbacks: {
 		saveSnippetData: function() {},
 	},
+
 	addTrailingSlash: true,
 	metaDescriptionDate: "",
 };
@@ -304,6 +306,7 @@ var SnippetPreview = function( opts ) {
 			title: this.refObj.rawData.snippetTitle || "",
 			urlPath: this.refObj.rawData.snippetCite || "",
 			metaDesc: this.refObj.rawData.snippetMeta || "",
+			breadcrumb: this.refObj.rawData.breadcrumb || [],
 		};
 
 		// For backwards compatibility set the metaTitle as placeholder.
@@ -352,12 +355,14 @@ SnippetPreview.prototype.renderTemplate = function() {
 			title: this.data.title,
 			snippetCite: this.data.urlPath,
 			meta: this.data.metaDesc,
+			breadcrumb: this.data.breadcrumb,
 		},
 		rendered: {
 			title: this.formatTitle(),
 			baseUrl: this.formatUrl(),
 			snippetCite: this.formatCite(),
 			meta: this.formatMeta(),
+			breadcrumb: "blablabla",
 		},
 		metaDescriptionDate: this.opts.metaDescriptionDate,
 		placeholder: this.opts.placeholder,
@@ -541,6 +546,7 @@ SnippetPreview.prototype.htmlOutput = function() {
 	html.cite = this.formatCite();
 	html.meta = this.formatMeta();
 	html.url = this.formatUrl();
+	html.breadcrumb= this.formatBreadcrumb();
 	return html;
 };
 
@@ -585,6 +591,10 @@ SnippetPreview.prototype.formatTitle = function() {
 SnippetPreview.prototype.formatUrl = function() {
 	var url = getBaseURL.call( this );
 
+	if( this.data.breadcrumb !== [] ) {
+		url = url.replace( /\/$/, " › " );
+	}
+
 	// Removes the http part of the url, google displays https:// if the website supports it.
 	return url.replace( /http:\/\//ig, "" );
 };
@@ -616,6 +626,16 @@ SnippetPreview.prototype.formatCite = function() {
 	cite = cite.replace( /\s/g, "-" );
 
 	return cite;
+};
+
+/**
+ * Creates a text from the breadcrumbs.
+ *
+ * @returns {string} the breadcrumb to use in the snippet.
+ */
+SnippetPreview.prototype.formatBreadcrumb = function() {
+	var breadcrumb = this.data.breadcrumb;
+	return breadcrumb.join( " › " );
 };
 
 /**
@@ -783,6 +803,9 @@ SnippetPreview.prototype.formatKeywordUrl = function( textString ) {
 SnippetPreview.prototype.renderOutput = function() {
 	this.element.rendered.title.innerHTML = this.output.title;
 	this.element.rendered.urlPath.innerHTML = this.output.cite;
+	if( this.output.breadcrumb !== "" ){
+		this.element.rendered.urlPath.innerHTML = "\u00A0" + this.output.breadcrumb;
+	}
 	this.element.rendered.urlBase.innerHTML = this.output.url;
 	this.element.rendered.metaDesc.innerHTML = this.output.meta;
 };
