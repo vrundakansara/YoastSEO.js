@@ -283,4 +283,16 @@ describe("Get sentences from text", function(){
 
 		testGetSentences( testCases );
 	} );
+
+	it( "detects sentences with HTML entities in it.", function() {
+		let testCases = [
+			{
+				input: "It didn&#8217;t happen.",
+				expected:[ "It didn&#8217;t happen." ]
+			}
+		];
+
+		testGetSentences( testCases );
+	} );
+
 });
