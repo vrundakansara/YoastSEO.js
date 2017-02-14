@@ -30,6 +30,7 @@ describe( "The first paragraph should be skipped when it is empty.", function(){
 		expect( firstParagraph( new Paper( "<p></p><p>this is a keyword</p>", {keyword:""} ) ) ).toBe( 0 );
 		expect( firstParagraph( new Paper ( "<p></p>", {keyword: "keyword"} ) ) ).toBe( 0 );
 		expect( firstParagraph( new Paper ( "<p></p><p>Not an empty paragraph</p><p>This is a keyword</p>", {keyword: "keyword"} ) ) ).toBe( 0 );
+		expect( firstParagraph( new Paper ( "       \n\nLorem ipsum dolor sit amet", {keyword: "Lorem"} ) ) ).toBe( 1 );
 	});
 });
 
