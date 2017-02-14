@@ -211,7 +211,7 @@ describe("Get sentences from text", function(){
 		expect( actual ).toEqual( expected );
 	});
 
-	it( "should match correctly with quotation", function() {
+	it( "should match correctly with punctuation marks", function() {
 		var testCases = [
 			{
 				input: "First sentence. \"Second sentence\"",
@@ -228,6 +228,10 @@ describe("Get sentences from text", function(){
 			{
 				input: "First sentence. ¡Second sentence!",
 				expected: [ "First sentence.", "¡Second sentence!" ]
+			},
+			{
+				input: "Denn sie bekommen dann eine Zulage von 100 Prozent.“ Es funktioniert.",
+				expected: [ "Denn sie bekommen dann eine Zulage von 100 Prozent.“", "Es funktioniert." ]
 			}
 		];
 
