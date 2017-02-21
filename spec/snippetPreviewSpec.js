@@ -1,11 +1,11 @@
-var SnippetPreview = require("../js/snippetPreview.js");
+let SnippetPreview = require("../js/snippetPreview.js");
 
 require("../js/app.js");
-var Factory = require( "./helpers/factory.js" );
+let Factory = require( "./helpers/factory.js" );
 
 describe("The snippet preview constructor", function() {
 	it("accepts an App object as an opts property", function() {
-		var mockApp = {
+		let mockApp = {
 			rawData: {
 				snippetTitle: "",
 				snippetCite: "",
@@ -13,10 +13,10 @@ describe("The snippet preview constructor", function() {
 			}
 		};
 		// Makes lodash think this is a valid HTML element
-		var mockElement = [];
+		let mockElement = [];
 		mockElement.nodeType = 1;
 
-		var snippetPreview = new SnippetPreview({
+		let snippetPreview = new SnippetPreview({
 			analyzerApp: mockApp,
 			targetElement: mockElement
 		});
@@ -28,10 +28,10 @@ describe("The snippet preview constructor", function() {
 describe( "The SnippetPreview format functions", function(){
 	it( "formats texts to use in the SnippetPreview", function(){
 		// Makes lodash think this is a valid HTML element
-		var mockElement = [];
+		let mockElement = [];
 		mockElement.nodeType = 1;
 
-		var mockApp = {
+		let mockApp = {
 			rawData: {
 				snippetTitle: "<span>snippetTitle keyword</span>",
 				snippetCite: "homeurl",
@@ -44,7 +44,7 @@ describe( "The SnippetPreview format functions", function(){
 			}
 		};
 
-		var snippetPreview = new SnippetPreview({
+		let snippetPreview = new SnippetPreview({
 			analyzerApp: mockApp,
 			targetElement: mockElement
 		});
@@ -73,7 +73,7 @@ describe( "The SnippetPreview format functions", function(){
 	});
 
 	describe( "#formatKeywordUrl", function() {
-		var snippetPreview, refObj, mockElement;
+		let snippetPreview, refObj, mockElement;
 
 		beforeEach( function() {
 			mockElement = Factory.buildMockElement();
@@ -98,10 +98,10 @@ describe( "The SnippetPreview format functions", function(){
 
 	describe( "The snippet preview format functions with special characters like periods", function() {
 		// Makes lodash think this is a valid HTML element
-		var mockElement = [];
+		let mockElement = [];
 		mockElement.nodeType = 1;
 
-		var mockApp = {
+		let mockApp = {
 			rawData: {
 				snippetMeta: "This is the Yoast SEO 3.9 release",
 				keyword: "Yoast SEO 3.9"
@@ -112,7 +112,7 @@ describe( "The SnippetPreview format functions", function(){
 			}
 		};
 
-		var snippetPreview = new SnippetPreview({
+		let snippetPreview = new SnippetPreview({
 			analyzerApp: mockApp,
 			targetElement: mockElement
 		});
@@ -123,10 +123,10 @@ describe( "The SnippetPreview format functions", function(){
 	} );
 	describe( "The snippet preview format functions with special characters like periods", function() {
 		// Makes lodash think this is a valid HTML element
-		var mockElement = [];
+		let mockElement = [];
 		mockElement.nodeType = 1;
 
-		var mockApp = {
+		let mockApp = {
 			rawData: {
 				snippetMeta: "If you like Yoast SEO, please give a 5* rating",
 				keyword: "5* rating"
@@ -137,7 +137,7 @@ describe( "The SnippetPreview format functions", function(){
 			}
 		};
 
-		var snippetPreview = new SnippetPreview({
+		let snippetPreview = new SnippetPreview({
 			analyzerApp: mockApp,
 			targetElement: mockElement
 		});
@@ -150,15 +150,15 @@ describe( "The SnippetPreview format functions", function(){
 
 describe( "Adds dashes to the keyword for highlighting in the snippet", function() {
 	it( "returns a keyword with strong tags", function() {
-		var mockApp = {
+		let mockApp = {
 			rawData: {
 				keyword: "keyword"
 			}
 		};
-		var mockElement = [];
+		let mockElement = [];
 		mockElement.nodeType = 1;
 
-		var snippetPreview = new SnippetPreview({
+		let snippetPreview = new SnippetPreview({
 			analyzerApp: mockApp,
 			targetElement: mockElement
 		});
@@ -169,15 +169,15 @@ describe( "Adds dashes to the keyword for highlighting in the snippet", function
 
 describe( "Adds dashes to the keyword for highlighting in the snippet", function() {
 	it( "returns a keyword with strong tags", function() {
-		var mockApp = {
+		let mockApp = {
 			rawData: {
 				keyword: "key-word"
 			}
 		};
-		var mockElement = [];
+		let mockElement = [];
 		mockElement.nodeType = 1;
 
-		var snippetPreview = new SnippetPreview({
+		let snippetPreview = new SnippetPreview({
 			analyzerApp: mockApp,
 			targetElement: mockElement
 		});
@@ -187,18 +187,52 @@ describe( "Adds dashes to the keyword for highlighting in the snippet", function
 
 describe( "Formats the keyword in the title with diacritics", function() {
 	it( "returns a keyword with strong tags", function(){
-		var mockApp = {
+		let mockApp = {
 			rawData: {
 				keyword: "Slovníček pojmû"
 			}
 		};
-		var mockElement = [];
+		let mockElement = [];
 		mockElement.nodeType = 1;
 
-		var snippetPreview = new SnippetPreview({
+		let snippetPreview = new SnippetPreview({
 			analyzerApp: mockApp,
 			targetElement: mockElement
 		});
 		expect(snippetPreview.formatKeyword( "this is a Slovníček pojmû with diacritic" ) ).toBe( "this is a<strong> Slovníček pojmû </strong>with diacritic" );
+	});
+});
+
+describe( "Highlights individual keywords from a keyword combination", function() {
+	it( "highlights individual keywords from a keyword combination in the same order as the keyword", function(){
+		let mockApp = {
+			rawData: {
+				keyword: "individual keywords"
+			}
+		};
+		let mockElement = [];
+		mockElement.nodeType = 1;
+
+		let snippetPreview = new SnippetPreview({
+			analyzerApp: mockApp,
+			targetElement: mockElement
+		});
+		expect(snippetPreview.formatKeyword( "this is an individual of keywords" ) ).toBe( "this is an<strong> individual </strong>of<strong> keywords </strong>" );
+	});
+
+	it( "highlights individual keywords from a keyword combination in reversed order", function(){
+		let mockApp = {
+			rawData: {
+				keyword: "individual keywords"
+			}
+		};
+		let mockElement = [];
+		mockElement.nodeType = 1;
+
+		let snippetPreview = new SnippetPreview({
+			analyzerApp: mockApp,
+			targetElement: mockElement
+		});
+		expect(snippetPreview.formatKeyword( "this is an individual of keywords" ) ).toBe( "this is a <strong> keyword </strong>of<strong> individual </strong>" );
 	});
 });
