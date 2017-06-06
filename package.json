@@ -49,6 +49,7 @@
     "url": "https://github.com/Yoast/js-text-analysis/issues"
   },
   "dependencies": {
+    "console.table": "^0.8.0",
     "htmlparser2": "^3.9.2",
     "jed": "^1.1.0",
     "lodash": "^4.14.1",
