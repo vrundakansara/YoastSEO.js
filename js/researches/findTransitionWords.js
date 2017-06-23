@@ -33,18 +33,9 @@ var matchTwoPartTransitionWords = function( sentence, twoPartTransitionWords ) {
 var matchTransitionWords = function( sentence, transitionWords ) {
 	sentence = normalizeSingleQuotes( sentence );
 
-	// Var matchedTransitionWords = filter( transitionWords, function( word ) {
-	// 	Return matchWordInSentence( word, sentence );
-	// } );
-
-    var matchedTransitionWords = [];
-
-    for( var i = 0; i < transitionWords.length; i++ ) {
-        if( includes( sentence, transitionWords[ i ] ) ) {
-            matchedTransitionWords.push([sentence, transitionWords[ i ]]);
-        }
-    }
-
+	var matchedTransitionWords = filter( transitionWords, function( word ) {
+		return matchWordInSentence( word, sentence );
+	} );
 	return matchedTransitionWords;
 };
 
