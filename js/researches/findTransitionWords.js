@@ -3,7 +3,7 @@ var getSentences = require( "../stringProcessing/getSentences.js" );
 var matchWordInSentence = require( "../stringProcessing/matchWordInSentence.js" );
 var normalizeSingleQuotes = require( "../stringProcessing/quotes.js" ).normalizeSingle;
 var getTransitionWords = require( "../helpers/getTransitionWords.js" );
-
+var includes = require( "lodash/includes" );
 var forEach = require( "lodash/forEach" );
 var filter = require( "lodash/filter" );
 var memoize = require( "lodash/memoize" );
@@ -19,6 +19,7 @@ var createRegexFromDoubleArrayCached = memoize( createRegexFromDoubleArray );
 var matchTwoPartTransitionWords = function( sentence, twoPartTransitionWords ) {
 	sentence = normalizeSingleQuotes( sentence );
 	var twoPartTransitionWordsRegex = createRegexFromDoubleArrayCached( twoPartTransitionWords );
+	// Console.log( twoPartTransitionWordsRegex );
 	return sentence.match( twoPartTransitionWordsRegex );
 };
 
@@ -32,9 +33,17 @@ var matchTwoPartTransitionWords = function( sentence, twoPartTransitionWords ) {
 var matchTransitionWords = function( sentence, transitionWords ) {
 	sentence = normalizeSingleQuotes( sentence );
 
-	var matchedTransitionWords = filter( transitionWords, function( word ) {
-		return matchWordInSentence( word, sentence );
-	} );
+	// Var matchedTransitionWords = filter( transitionWords, function( word ) {
+	// 	Return matchWordInSentence( word, sentence );
+	// } );
+
+    var matchedTransitionWords = [];
+
+    for( var i = 0; i < transitionWords.length; i++ ) {
+        if( includes( sentence, transitionWords[ i ] ) ) {
+            matchedTransitionWords.push([sentence, transitionWords[ i ]]);
+        }
+    }
 
 	return matchedTransitionWords;
 };
