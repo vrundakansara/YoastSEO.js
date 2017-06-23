@@ -30,14 +30,23 @@ var matchTwoPartTransitionWords = function( sentence, twoPartTransitionWords ) {
  * @returns {Array} The found transitional words.
  */
 var matchTransitionWords = function( sentence, transitionWords ) {
-	sentence = normalizeSingleQuotes( sentence );
+    sentence = normalizeSingleQuotes( sentence );
 
-	var matchedTransitionWords = filter( transitionWords, function( word ) {
-		return matchWordInSentence( word, sentence );
-	} );
+    // Var matchedTransitionWords = filter( transitionWords, function( word ) {
+    // 	Return matchWordInSentence( word, sentence );
+    // } );
 
-	return matchedTransitionWords;
+    var matchedTransitionWords = [];
+
+    for( var i = 0; i < transitionWords.length; i++ ) {
+        if( includes( sentence, transitionWords[ i ] ) ) {
+            matchedTransitionWords.push([sentence, transitionWords[ i ]]);
+        }
+    }
+
+    return matchedTransitionWords;
 };
+
 
 /**
  * Checks the passed sentences to see if they contain transition words.
