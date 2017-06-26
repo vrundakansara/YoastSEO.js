@@ -57,7 +57,7 @@ var matchTransitionWords = function( sentence, transitionWords ) {
 	}
 
 	if ( matchedTransitionWords.length > 0 ) {
-	    return { sentence: sentence, transitionWords: matchedTransitionWords };
+	    return [ sentence, matchedTransitionWords ];
 	}
 	return [];
 };
@@ -89,8 +89,8 @@ var checkSentencesForTransitionWords = function( sentences, transitionWords ) {
 
 		if ( transitionWordMatches.length > 0 ) {
 			results.push( {
-				sentence: transitionWordMatches.sentence,
-				transitionWords: transitionWordMatches.transitionWords,
+				sentence: transitionWordMatches[ 0 ],
+				transitionWords: transitionWordMatches[ 1 ],
 			} );
 
 			return;
