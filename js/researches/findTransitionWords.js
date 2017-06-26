@@ -19,23 +19,23 @@ var createRegexFromDoubleArrayCached = memoize( createRegexFromDoubleArray );
  */
 var matchTwoPartTransitionWords = function( sentence, twoPartTransitionWords ) {
 	sentence = normalizeSingleQuotes( sentence );
-	// Var twoPartTransitionWordsRegex = createRegexFromDoubleArrayCached( twoPartTransitionWords );
-	// Return sentence.match( twoPartTransitionWordsRegex );
-
-	var matchedTransitionWords = [];
-
-	for( var i = 0; i < twoPartTransitionWords.length; i++ ) {
-		if( includes( sentence, twoPartTransitionWords[ i ][ 0 ] ) ) {
-		    if( includes( sentence, twoPartTransitionWords[ i ][ 1 ] ) ) {
-			var transitionWords = [];
-			transitionWords.push( twoPartTransitionWords[ i ][ 0 ] );
-			transitionWords.push( twoPartTransitionWords[ i ][ 1 ] );
-			matchedTransitionWords.push( [ sentence, transitionWords ] );
-		}
-		}
-		return;
-	}
-	return matchedTransitionWords;
+	var twoPartTransitionWordsRegex = createRegexFromDoubleArrayCached( twoPartTransitionWords );
+	return sentence.match( twoPartTransitionWordsRegex );
+    //
+	// Var matchedTransitionWords = [];
+    //
+	// For( var i = 0; i < twoPartTransitionWords.length; i++ ) {
+	// 	If( includes( sentence, twoPartTransitionWords[ i ][ 0 ] ) ) {
+	// 	    If( includes( sentence, twoPartTransitionWords[ i ][ 1 ] ) ) {
+	// 		Var transitionWords = [];
+	// 		TransitionWords.push( twoPartTransitionWords[ i ][ 0 ] );
+	// 		TransitionWords.push( twoPartTransitionWords[ i ][ 1 ] );
+	// 		MatchedTransitionWords.push( [ sentence, transitionWords ] );
+	// 	}
+	// 	}
+	// 	Return;
+	// }
+	// Return matchedTransitionWords;
 };
 
 /**
@@ -52,11 +52,14 @@ var matchTransitionWords = function( sentence, transitionWords ) {
 
 	for( var i = 0; i < transitionWords.length; i++ ) {
 		if( includes( sentence, transitionWords[ i ] ) ) {
-			matchedTransitionWords.push( [ sentence, transitionWords[ i ] ] );
+			matchedTransitionWords.push( transitionWords[ i ] );
 		}
 	}
 
-	return matchedTransitionWords;
+	if ( matchedTransitionWords.length > 0 ) {
+	    return { sentence: sentence, transitionWords: matchedTransitionWords };
+	}
+	return [];
 };
 
 
@@ -84,10 +87,10 @@ var checkSentencesForTransitionWords = function( sentences, transitionWords ) {
 
 		var transitionWordMatches = matchTransitionWords( sentence, transitionWords.transitionWords );
 
-		if ( transitionWordMatches.length !== null ) {
+		if ( transitionWordMatches.length > 0 ) {
 			results.push( {
-				sentence: sentence,
-				transitionWords: transitionWordMatches,
+				sentence: transitionWordMatches.sentence,
+				transitionWords: transitionWordMatches.transitionWords,
 			} );
 
 			return;
