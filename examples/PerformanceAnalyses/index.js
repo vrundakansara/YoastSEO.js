@@ -2,7 +2,7 @@ require( "console.table" );
 
 var Paper = require( "../../js/values/Paper" );
 var Researcher = require( "../../js/researcher" );
-var researches = [ "urlLength", "wordCountInText", "findKeywordInPageTitle", "calculateFleschReading", "getLinkStatistics", "getLinks", "linkCount", "imageCount", "altTagCount", "matchKeywordInSubheadings", "getKeywordDensity", "stopWordsInKeyword", "metaDescriptionLength", "getKeywordDensity", "stopWordsInKeyword", "stopWordsInUrl", "metaDescriptionLength", "keyphraseLength", "keywordCountInUrl", "firstParagraph", "metaDescriptionKeyword", "pageTitleWidth", "wordComplexity", "getParagraphLength", "countSentencesFromText", "countSentencesFromDescription", "getSubheadingTextLengths", "findTransitionWords", "passiveVoice", "getSentenceBeginnings" ];
+var researches = [ "urlLength", "wordCountInText", "findKeywordInPageTitle", "calculateFleschReading", "getLinkStatistics", "getLinks", "linkCount", "imageCount", "altTagCount", "matchKeywordInSubheadings", "getKeywordDensity", "stopWordsInKeyword", "metaDescriptionLength", "getKeywordDensity", "stopWordsInKeyword", "stopWordsInUrl", "metaDescriptionLength", "keyphraseLength", "keywordCountInUrl", "firstParagraph", "metaDescriptionKeyword", "pageTitleWidth", "getParagraphLength", "countSentencesFromText", "countSentencesFromDescription", "getSubheadingTextLengths", "findTransitionWords", "passiveVoice", "getSentenceBeginnings", "relevantWords" ];
 var fs = require( "fs" );
 
 var filepath = process.argv[ 2 ];
@@ -80,7 +80,7 @@ function sortResults( results ) {
 }
 
 function assessAll( runs ) {
-	var researcher = new Researcher(paper);
+	var researcher = new Researcher( paper );
 	var results = [];
 	var startTime = Date.now();
 
