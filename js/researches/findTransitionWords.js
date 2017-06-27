@@ -6,7 +6,6 @@ var addWordBoundary = require( "../stringProcessing/addWordboundary.js" );
 
 var forEach = require( "lodash/forEach" );
 var memoize = require( "lodash/memoize" );
-var includes = require( "lodash/includes" );
 
 var createRegexFromDoubleArrayCached = memoize( createRegexFromDoubleArray );
 /**
@@ -99,7 +98,7 @@ var checkSentencesForTransitionWords = function( sentences, transitionWords ) {
 				transitionWords: transitionWordMatches[ 1 ],
 			} );
 
-			return;
+
 		}
 	} );
 
