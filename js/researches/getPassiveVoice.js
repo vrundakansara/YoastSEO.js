@@ -11,7 +11,7 @@ var determinePassivesEnglish = require( "./english/determinePassives.js" );
 var getSentencePartsGerman = require( "./german/getSentenceParts.js" );
 var determinePassivesGerman = require( "./german/determinePassives.js" );
 
-var forEach = require( "lodash/forEach" );
+// var forEach = require( "lodash/forEach" );
 
 /**
  * Gets the sentence parts from a sentence by determining sentence breakers.
@@ -68,28 +68,38 @@ module.exports = function( paper ) {
 
 	var sentenceObjects = [];
 
-	forEach( sentences, function( sentence ) {
-		sentenceObjects.push( new Sentence( sentence, locale ) );
-	} );
+
+	for( let i = 0; i < sentences.length; i++ ) {
+		sentenceObjects.push( new Sentence( sentences[ i ], locale ) );
+	}
+	// ForEach( sentences, function( sentence ) {
+	// 	SentenceObjects.push( new Sentence( sentence, locale ) );
+	// } );
 
 	var passiveSentences = [];
 
 	// Get sentence parts for each sentence.
-	forEach( sentenceObjects, function( sentence ) {
-		var strippedSentence = stripHTMLTags( sentence.getSentenceText() ).toLocaleLowerCase();
+	// forEach( sentenceObjects, function( sentence ) {
+	for( let i = 0; i<sentenceObjects.length; i++ ) {
+		var strippedSentence = stripHTMLTags( sentenceObjects[ i ].getSentenceText() ).toLocaleLowerCase();
 
 		var sentenceParts = getSentenceParts( strippedSentence, language );
 
 		var passive = false;
-		forEach( sentenceParts, function( sentencePart ) {
-			determinePassives( sentencePart, language );
-			passive = passive || sentencePart.isPassive();
-		} );
+
+		for( let i = 0; i < sentenceParts.lenth; i++ ) {
+			determinePassives( sentenceParts[ i ], language );
+			passive = passive || sentenceParts[ i ].isPassive();
+		}
+		// ForEach( sentenceParts, function( sentencePart ) {
+		// 	DeterminePassives( sentencePart, language );
+		// 	Passive = passive || sentencePart.isPassive();
+		// } );
 
 		if ( passive === true ) {
-			passiveSentences.push( sentence.getSentenceText() );
+			passiveSentences.push( sentenceObjects[ i ].getSentenceText() );
 		}
-	} );
+	}
 
 	return {
 		total: sentences.length,

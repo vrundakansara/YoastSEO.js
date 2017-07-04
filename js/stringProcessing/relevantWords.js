@@ -11,7 +11,7 @@ let getLanguage = require( "../helpers/getLanguage.js" );
 
 let filter = require( "lodash/filter" );
 let map = require( "lodash/map" );
-let forEach = require( "lodash/forEach" );
+// let forEach = require( "lodash/forEach" );
 let has = require( "lodash/has" );
 let flatMap = require( "lodash/flatMap" );
 let values = require( "lodash/values" );
@@ -51,8 +51,8 @@ function getWordCombinations( text, combinationSize, functionWords ) {
 			if ( i + combinationSize - 1 < words.length ) {
 				combination = words.slice( i, i + combinationSize );
 				return new WordCombination( combination, 0, functionWords );
+				// Return false;
 			}
-
 			return false;
 		} ) );
 	} );
@@ -67,16 +67,28 @@ function getWordCombinations( text, combinationSize, functionWords ) {
 function calculateOccurrences( wordCombinations ) {
 	let occurrences = {};
 
-	forEach( wordCombinations, function( wordCombination ) {
-		let combination = wordCombination.getCombination();
+
+	for( let i = 0; i < wordCombinations.length; i++ ) {
+		let combination = wordCombinations[ i ].getCombination();
 
 		if ( ! has( occurrences, combination ) ) {
-			occurrences[ combination ] = wordCombination;
+			occurrences[ combination ] = wordCombinations[ i ];
 		}
 
 		occurrences[ combination ].incrementOccurrences();
-	} );
+	}
 
+
+	// forEach( wordCombinations, function( wordCombination ) {
+	// 	let combination = wordCombination.getCombination();
+    //
+	// 	if ( ! has( occurrences, combination ) ) {
+	// 		occurrences[ combination ] = wordCombination;
+	// 	}
+    //
+	// 	occurrences[ combination ].incrementOccurrences();
+	// }
+	// );
 	return values( occurrences );
 }
 
@@ -279,9 +291,13 @@ function getRelevantWords( text, locale ) {
 
 	let oneWordRelevanceMap = {};
 
-	forEach( oneWordCombinations, function( combination ) {
-		oneWordRelevanceMap[ combination.getCombination() ] = combination.getRelevance( functionWords );
-	} );
+	for( let i = 0; i < oneWordCombinations.length; i++ ) {
+		oneWordRelevanceMap[ oneWordCombinations[ i ].getCombination() ] = oneWordCombinations[ i ].getRelevance( functionWords );
+	}
+
+	// forEach( oneWordCombinations, function( combination ) {
+	// 	oneWordRelevanceMap[ combination.getCombination() ] = combination.getRelevance( functionWords );
+	// } );
 
 	let twoWordCombinations = calculateOccurrences( getWordCombinations( text, 2, functionWords().all ) );
 	let threeWordCombinations = calculateOccurrences( getWordCombinations( text, 3, functionWords().all ) );
@@ -297,9 +313,14 @@ function getRelevantWords( text, locale ) {
 
 	combinations = filterCombinations( combinations, functionWords, locale );
 
-	forEach( combinations, function( combination ) {
-		combination.setRelevantWords( oneWordRelevanceMap );
-	} );
+	for( let i = 0; i < combinations.length; i++ ) {
+		combinations[ i ].setRelevantWords( oneWordRelevanceMap );
+	}
+
+
+	// forEach( combinations, function( combination ) {
+	// 	combination.setRelevantWords( oneWordRelevanceMap );
+	// } );
 
 	combinations = getRelevantCombinations( combinations, wordCount );
 	sortCombinations( combinations );
