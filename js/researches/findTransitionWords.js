@@ -2,7 +2,7 @@ var createRegexFromDoubleArray = require( "../stringProcessing/createRegexFromDo
 var getSentences = require( "../stringProcessing/getSentences.js" );
 var normalizeSingleQuotes = require( "../stringProcessing/quotes.js" ).normalizeSingle;
 var getTransitionWords = require( "../helpers/getTransitionWords.js" );
-// var includes = require( "lodash/includes" );
+// Var includes = require( "lodash/includes" );
 var addWordBoundary = require( "../stringProcessing/addWordboundary.js" );
 var forEach = require( "lodash/forEach" );
 var memoize = require( "lodash/memoize" );
@@ -21,20 +21,20 @@ var matchTwoPartTransitionWords = function( sentence, twoPartTransitionWords ) {
 	// Console.log( twoPartTransitionWordsRegex );
 	return sentence.match( twoPartTransitionWordsRegex );
 
-	// var matchedTransitionWords = [];
+	// Var matchedTransitionWords = [];
     //
-	// for( var i = 0; i < twoPartTransitionWords.length; i++ ) {
-	// 	if( includes( sentence, twoPartTransitionWords[ i ][ 0 ] ) ) {
-	// 	    if( includes( sentence, twoPartTransitionWords[ i ][ 1 ] ) ) {
-	// 		var transitionWords = [];
-	// 		transitionWords.push( twoPartTransitionWords[ i ][ 0 ] );
-	// 		transitionWords.push( twoPartTransitionWords[ i ][ 1 ] );
-	// 		matchedTransitionWords.push( [ sentence, transitionWords ] );
+	// For( var i = 0; i < twoPartTransitionWords.length; i++ ) {
+	// 	If( includes( sentence, twoPartTransitionWords[ i ][ 0 ] ) ) {
+	// 	    If( includes( sentence, twoPartTransitionWords[ i ][ 1 ] ) ) {
+	// 		Var transitionWords = [];
+	// 		TransitionWords.push( twoPartTransitionWords[ i ][ 0 ] );
+	// 		TransitionWords.push( twoPartTransitionWords[ i ][ 1 ] );
+	// 		MatchedTransitionWords.push( [ sentence, transitionWords ] );
 	// 	}
 	// 	}
-	// 	return;
+	// 	Return;
 	// }
-	// return matchedTransitionWords;
+	// Return matchedTransitionWords;
 };
 
 /**
@@ -78,19 +78,20 @@ var checkSentencesForTransitionWords = function( sentences, transitionWords ) {
 		singleTransitionWords.push( { regex: reg, word: transitionWords.transitionWords[ i ] } );
 	 }
 
-	forEach( sentences, function( sentence ) {
-		var twoPartMatches = matchTwoPartTransitionWords( sentence, transitionWords.twoPartTransitionWords() );
+	// forEach( sentences, function( sentence ) {
+	for( let i = 0; i < sentences.length; i++ ) {
+		var twoPartMatches = matchTwoPartTransitionWords( sentences[ i ], transitionWords.twoPartTransitionWords() );
 
 		if ( twoPartMatches !== null ) {
 			results.push( {
-				sentence: sentence,
+				sentence: sentences[ i ],
 				transitionWords: twoPartMatches,
 			} );
 
-			return;
+			continue;
 		}
 
-		var transitionWordMatches = matchTransitionWords( sentence, singleTransitionWords );
+		var transitionWordMatches = matchTransitionWords( sentences[ i ], singleTransitionWords );
 
 		if ( transitionWordMatches.length > 0 ) {
 			results.push( {
@@ -98,7 +99,7 @@ var checkSentencesForTransitionWords = function( sentences, transitionWords ) {
 				transitionWords: transitionWordMatches[ 1 ],
 			} );
 		}
-	} );
+	}
 
 	return results;
 };
